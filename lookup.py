@@ -3,6 +3,13 @@
 import sqlite3
 import argparse
 
+has_tojyutping = False
+try:
+    import ToJyutping
+    has_tojyutping = True
+except:
+    pass
+
 con = sqlite3.connect("dict.db")
 con.row_factory = sqlite3.Row
 cur = con.cursor()
@@ -30,9 +37,18 @@ for char in lookup:
         pronounciation.append("<unk>")
 
 all_results = []
-all_results.append(
-    {"title": "'".join(pronounciation)}
-)
+if has_tojyutping:
+    try:
+        all_results.append({
+            "title": ToJyutping.get_jyutping(lookup),
+            "subtitle": "CanCLID 解析"
+        })
+    except:
+        pass
+all_results.append({"title": "'".join(pronounciation), "subtitle": "逐字检索"})
 
 import json
-print(json.encoder.JSONEncoder(ensure_ascii=False).encode({"items": all_results}))
+
+print(
+    json.encoder.JSONEncoder(ensure_ascii=False).encode({"items":
+                                                         all_results}))

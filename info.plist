@@ -90,7 +90,7 @@
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string></string>
+				<string>Looking up...</string>
 				<key>script</key>
 				<string>query=$1
 
